@@ -14,13 +14,14 @@ func _enter_tree():
 	# Hide the main panel. Very much required.
 	_make_visible(false)
 	add_autoload_singleton("StatCollectorGlobals", "res://addons/stat_printer/scene/globals.tscn")
-	StatCollectorGlobals.dock = main_panel_instance
+	get_node("/root/StatCollectorGlobals").dock = main_panel_instance
 
 func _exit_tree():
-	StatCollectorGlobals.save()
+	get_node("/root/StatCollectorGlobals").save()
 	if main_panel_instance:
 		main_panel_instance.queue_free()
 	remove_autoload_singleton("StatCollectorGlobals")
+
 
 
 func _has_main_screen():
