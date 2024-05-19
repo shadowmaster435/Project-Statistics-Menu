@@ -13,6 +13,7 @@ func _ready():
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
 	update_new_entry_child_position()
+	StatCollectorGlobals.file_type_menu = self
 
 func update_new_entry_child_position():
 	var ch_count = vbox.get_child_count()

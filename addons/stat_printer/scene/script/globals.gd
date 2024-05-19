@@ -27,6 +27,9 @@ func _enter_tree():
 	else:
 		create_save_file()
 
+func _exit_tree():
+	save()
+
 func load_save():
 	var file = FileAccess.open("res://addons/stat_printer/saved/save.json", FileAccess.READ)
 	var json = JSON.parse_string(file.get_as_text())
@@ -146,6 +149,9 @@ func collect_files(file_path: String):
 		collect_script_stuff(text)
 	collect_file_counts(file_path)
 
+func _notification(what):
+	if what == NOTIFICATION_EDITOR_PRE_SAVE:
+		save()
 	
 func collect_script_stuff(string: String):
 	for scanner_name in script_scanners:

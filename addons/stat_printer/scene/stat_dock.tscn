@@ -19,8 +19,8 @@ script = ExtResource("1_fy0jh")
 
 [node name="BaseContainer" type="VSplitContainer" parent="."]
 layout_mode = 0
-offset_right = 1145.0
-offset_bottom = 636.0
+offset_right = 135.0
+offset_bottom = 117.0
 split_offset = 480
 
 [node name="PanelContainer" type="PanelContainer" parent="BaseContainer"]

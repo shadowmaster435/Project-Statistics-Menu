@@ -15,7 +15,7 @@ func _ready():
 	StatCollectorGlobals.scanner_menu = $"BaseContainer/PanelContainer/TabContainer/Text Scanners"
 	StatCollectorGlobals.folder_blacklist_menu = $"BaseContainer/PanelContainer/TabContainer/Folder Blacklist"
 	StatCollectorGlobals.file_type_menu = $"BaseContainer/PanelContainer/TabContainer/File Types"
-	
+	StatCollectorGlobals.dock = self
 
 func collect():
 	StatCollectorGlobals.collect()
