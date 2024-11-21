@@ -8,6 +8,8 @@ const blacklisted_folder_defaults = ["addons", ".godot"]
 var file_types = {}
 var script_scanners = {}
 var blacklisted_folders = []
+var class_names = []
+var class_extensions = {}
 
 var char_count = 0
 var counts = {}
@@ -75,16 +77,21 @@ func load_defaults():
 
 #region Scan Functions
 
+
+
 func collect_entries():
 	blacklisted_folders = folder_blacklist_menu.collect_entries()
 	file_types = file_type_menu.collect_entries()
 	script_scanners = scanner_menu.collect_entries()
 	
+	
 
 func collect(): # Start Scan
-	dock.output.text = ""
+	if dock != null:
+		dock.output.text = ""
 	collect_entries()
 	counts.clear()
+	class_extensions.clear()
 	char_count = 0
 	var folder_paths = collect_folder_paths()
 	var file_paths = collect_file_paths(folder_paths)
@@ -92,7 +99,8 @@ func collect(): # Start Scan
 		collect_files(path)
 	for entry_name in counts:
 		var entry = counts[entry_name]
-		dock.output.text = dock.output.text + str(entry_name) + ": " + str(entry) + "\n"
+		if dock != null:
+			dock.output.text = dock.output.text + str(entry_name) + ": " + str(entry) + "\n"
 
 func collect_file_paths(dir_paths: Array):
 	var file_paths = []
@@ -101,7 +109,10 @@ func collect_file_paths(dir_paths: Array):
 		for file_path in files:
 			if not ends_with_any(file_path, file_types.values()):
 				continue
-			file_paths.append(path + "/" + file_path)
+			var pth = path + "/" + file_path
+			file_paths.append(pth)
+			if pth.ends_with("gd"):
+				collect_class_stuff(pth, FileAccess.get_file_as_string(pth))
 	return file_paths
 	
 func collect_folder_paths(dir_path: String = "res://"):
@@ -140,6 +151,55 @@ func collect_file_counts(file_path: String):
 			else:
 				counts[file_type] = 1
 
+func to_line_array(string: String):
+	return string.replace("\t", "").split("\n")
+
+func collect_class_stuff(script_path: String, script_text: String):
+	var script = load(script_path) as GDScript
+	var props = script.get_script_property_list()
+	var consts = script.get_script_constant_map()
+	var scr_names = isolate_class_name_and_extends(script_text)
+	var cl_name = scr_names[0]
+	var ext_name = scr_names[1]
+	var lines = to_line_array(script_text)
+
+	class_names.append(cl_name)
+	if (cl_name.length() > 0 and ext_name.length() > 0) and not cl_name.contains(" "):
+		class_extensions[cl_name] = [ext_name, script_path]
+
+	
+	
+func isolate_class_name_and_extends(text):
+
+	var lines = to_line_array(text)
+	var cl_line = ""
+	var ext_line = ""
+	for line in lines:
+		if line.contains("class_name"):
+			cl_line = line
+			break 
+	var split = cl_line.split(" ")
+	var text_mode = false
+	var step = 0
+	
+	for entry in split:
+		
+		if entry.length() == 0:
+			continue
+		if entry == "class_name" or entry == "extends":
+			step += 1
+			continue
+	
+		if step == 1:
+			cl_line = entry
+			if text.contains("class_name") and not text.contains("extends"): 
+				return [cl_line, "null"] 
+		else:
+			ext_line = entry
+	
+			
+	return [cl_line, ext_line]
+	
 func collect_files(file_path: String):
 	var file = FileAccess.open(file_path, FileAccess.READ)
 	

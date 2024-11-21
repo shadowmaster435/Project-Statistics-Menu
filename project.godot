@@ -11,12 +11,17 @@ config_version=5
 [application]
 
 config/name="StatPrinterPlugin"
-config/features=PackedStringArray("4.2", "Forward Plus")
+config/auto_accept_quit=false
+config/features=PackedStringArray("4.3", "Forward Plus")
 config/icon="res://icon.svg"
 
 [autoload]
 
-StatCollectorGlobals="*res://addons/stat_printer/scene/globals.tscn"
+StatCollectorGlobals="*res://addons/stat_printer/scene/script/globals.gd"
+
+[debug]
+
+file_logging/enable_file_logging=true
 
 [editor_plugins]
 

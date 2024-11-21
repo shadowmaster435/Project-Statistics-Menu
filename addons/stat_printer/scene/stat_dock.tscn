@@ -1,9 +1,10 @@
-[gd_scene load_steps=5 format=3 uid="uid://cii8q81edcqpe"]
+[gd_scene load_steps=6 format=3 uid="uid://cii8q81edcqpe"]
 
 [ext_resource type="Script" path="res://addons/stat_printer/scene/script/stat_dock.gd" id="1_fy0jh"]
 [ext_resource type="PackedScene" uid="uid://b8mtx0eh2xhek" path="res://addons/stat_printer/scene/text_scan_menu.tscn" id="2_irykf"]
 [ext_resource type="PackedScene" uid="uid://c6ixuai41ao32" path="res://addons/stat_printer/scene/folder_blacklist_menu.tscn" id="3_t2kp1"]
 [ext_resource type="PackedScene" uid="uid://bv1bjrtmchor7" path="res://addons/stat_printer/scene/file_type_menu.tscn" id="4_u8lox"]
+[ext_resource type="PackedScene" uid="uid://bx5g5uhujta73" path="res://addons/stat_printer/scene/extends_tree_menu.tscn" id="5_hmmoy"]
 
 [node name="StatDock" type="Control"]
 layout_mode = 3
@@ -38,6 +39,10 @@ visible = false
 layout_mode = 2
 
 [node name="File Types" parent="BaseContainer/PanelContainer/TabContainer" instance=ExtResource("4_u8lox")]
+visible = false
+layout_mode = 2
+
+[node name="ExtendsTreeMenu" parent="BaseContainer/PanelContainer/TabContainer" instance=ExtResource("5_hmmoy")]
 visible = false
 layout_mode = 2
 
@@ -87,6 +92,18 @@ layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 mouse_filter = 1
+text = "Classes: 4
+Else If Statements: 0
+Else Statements: 1
+Functions: 6
+If Statements: 3
+Lambda Functions: 0
+Match Statements: 0
+Signals: 0
+Variables: 6
+Scripts: 5
+Scenes: 1
+"
 
 [connection signal="pressed" from="BaseContainer/OutputPanelContainer/OutputSplitContainer/OutputButtonVBox/OutputButtonPanelContainer/ScanButton" to="." method="collect"]
 [connection signal="pressed" from="BaseContainer/OutputPanelContainer/OutputSplitContainer/OutputButtonVBox/OutputButtonPanelContainer2/LoadDefaults" to="." method="load_defaults"]

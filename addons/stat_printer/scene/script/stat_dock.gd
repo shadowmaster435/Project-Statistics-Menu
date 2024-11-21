@@ -4,6 +4,7 @@ extends Control
 var output
 var base
 var scan_button : Button
+var extends_tree
 
 
 # Called when the node enters the scene tree for the first time.
